@@ -1,0 +1,31 @@
+package build
+import mill._, scalalib._
+
+object todo extends ScalaModule {
+  def scalaVersion = "3.6.4"
+  override def scalacOptions: T[Seq[String]] =Seq(
+    "-Wsafe-init",
+    "-Yexplicit-nulls",
+    "-language:experimental.namedTuples",
+  )
+
+  val tapirVersion = "1.11.24"
+  def ivyDeps = Agg(
+    // type conversion
+    ivy"io.github.arainko::ducktape:0.2.8",
+    // logging lib
+    ivy"com.outr::scribe:3.16.1",
+    ivy"com.outr::scribe-slf4j2:3.16.1",
+    // http server
+    ivy"com.softwaremill.ox::core:0.5.13",
+    ivy"com.softwaremill.sttp.tapir::tapir-core:$tapirVersion",
+    ivy"com.softwaremill.sttp.tapir::tapir-netty-server-sync:$tapirVersion",
+    // json support
+    ivy"com.softwaremill.sttp.tapir::tapir-jsoniter-scala:$tapirVersion",
+    ivy"com.github.plokhotnyuk.jsoniter-scala::jsoniter-scala-core:2.34.0",
+    ivy"com.github.plokhotnyuk.jsoniter-scala::jsoniter-scala-macros:2.34.0",
+    // database
+    ivy"org.xerial:sqlite-jdbc:3.49.1.0",
+    ivy"com.wz7982::sqala-jdbc:0.2.31",
+  )
+}
