@@ -24,7 +24,7 @@ object Main extends OxApp.Simple:
       NettySyncServer()
         .options(corsInterceptor)
         .port(port)
-        .addEndpoints(Endpoints.all)
+        .addEndpoints(Controller.all.toList)
         .start()
     )(_.stop())
     println(s"Server started at http://localhost:${binding.port}. ")

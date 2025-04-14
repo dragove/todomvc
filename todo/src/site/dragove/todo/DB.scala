@@ -7,6 +7,10 @@ case class Todo(
     title: String,
     completed: Boolean
 )
+object Todo:
+  import com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec
+  import com.github.plokhotnyuk.jsoniter_scala.macros.JsonCodecMaker
+  given JsonValueCodec[List[Todo]] = JsonCodecMaker.make
 object DB:
   import org.sqlite.SQLiteDataSource
   import org.sqlite.SQLiteConfig
@@ -38,24 +42,24 @@ object TodoRepo:
     db.save(todo)
 
   def updateCompleted(id: Long, completed: Boolean) =
-    db.execute(
+    db.execute:
       update[Todo]
         .set(_.completed := completed)
         .where(_.id == id)
-    )
 
   def updateAllCompleted(completed: Boolean) =
-    db.execute(update[Todo].set(_.completed := completed))
+    db.execute:
+      update[Todo]
+        .set(_.completed := completed)
 
   def deleteById(id: Long) =
-    db.execute(delete[Todo].where(_.id == id))
+    db.execute:
+      delete[Todo].where(_.id == id)
 
   def deleteCompleted() =
-    db.execute(delete[Todo].where(_.completed))
+    db.execute:
+      delete[Todo].where(_.completed)
 
   def list(completed: Option[Boolean]) =
-    db.fetch(
-      from[Todo].filterIf(completed.isDefined)(data =>
-        data.completed == completed
-      )
-    )
+    db.fetch:
+      from[Todo].filterIf(completed.isDefined)(_.completed == completed)
