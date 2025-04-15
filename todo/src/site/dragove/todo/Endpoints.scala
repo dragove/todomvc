@@ -38,14 +38,13 @@ object Endpoints:
       get("all")
         .in(query[Option[String]]("filter"))
         .out(jsonBody[List[Todo]])
-        .handleSuccess: filter =>
-          filter match
-            case Some(x) =>
-              x match
-                case "all"       => TodoRepo.list(None)
-                case "active"    => TodoRepo.list(Some(false))
-                case "completed" => TodoRepo.list(Some(true))
-            case None => TodoRepo.list(None)
+        .handleSuccess:
+          case Some(x) =>
+            x match
+              case "all"       => TodoRepo.list(None)
+              case "active"    => TodoRepo.list(Some(false))
+              case "completed" => TodoRepo.list(Some(true))
+          case None => TodoRepo.list(None)
 
     controller:
       post("add")
