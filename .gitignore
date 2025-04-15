@@ -1,4 +1,7 @@
 todo.db
 .bloop
 .metals
+.bsp
+.idea
+.vscode
 /out

@@ -2,10 +2,8 @@ package site.dragove.todo
 
 import sttp.tapir.*
 
-import io.github.arainko.ducktape.*
 import sttp.shared.Identity
 import sttp.tapir.generic.auto.*
-import sttp.tapir.json.jsoniter.*
 import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.EndpointIO.Body
 
@@ -25,7 +23,9 @@ object Controller:
   def delete(url: String) = endpoint.delete.in(url)
 
 object Endpoints:
+  import sqala.data.mapping.*
   import Controller.*
+  import TapirJsonSqala.jsonBody
   val successJson = "{\"success\": true}"
 
   def init =
@@ -52,7 +52,7 @@ object Endpoints:
         .in(jsonBody[AddTodo])
         .out(stringJsonBody)
         .handleSuccess: t =>
-          TodoRepo.insert(t.into[Todo].transform(Field.const(_.id, 0L)))
+          TodoRepo.insert(t.mapTo[Todo])
           successJson
 
     controller:

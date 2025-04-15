@@ -7,10 +7,6 @@ case class Todo(
     title: String,
     completed: Boolean
 )
-object Todo:
-  import com.github.plokhotnyuk.jsoniter_scala.core.JsonValueCodec
-  import com.github.plokhotnyuk.jsoniter_scala.macros.JsonCodecMaker
-  given JsonValueCodec[List[Todo]] = JsonCodecMaker.make
 object DB:
   import org.sqlite.SQLiteDataSource
   import org.sqlite.SQLiteConfig

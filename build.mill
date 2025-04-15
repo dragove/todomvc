@@ -10,9 +10,8 @@ object todo extends ScalaModule {
   )
 
   val tapirVersion = "1.11.24"
+  val sqalaVersion = "0.2.31"
   def ivyDeps = Agg(
-    // type conversion
-    ivy"io.github.arainko::ducktape:0.2.8",
     // logging lib
     ivy"com.outr::scribe:3.16.1",
     ivy"com.outr::scribe-slf4j2:3.16.1",
@@ -20,12 +19,10 @@ object todo extends ScalaModule {
     ivy"com.softwaremill.ox::core:0.5.13",
     ivy"com.softwaremill.sttp.tapir::tapir-core:$tapirVersion",
     ivy"com.softwaremill.sttp.tapir::tapir-netty-server-sync:$tapirVersion",
-    // json support
-    ivy"com.softwaremill.sttp.tapir::tapir-jsoniter-scala:$tapirVersion",
-    ivy"com.github.plokhotnyuk.jsoniter-scala::jsoniter-scala-core:2.34.0",
-    ivy"com.github.plokhotnyuk.jsoniter-scala::jsoniter-scala-macros:2.34.0",
     // database
     ivy"org.xerial:sqlite-jdbc:3.49.1.0",
-    ivy"com.wz7982::sqala-jdbc:0.2.31",
+    ivy"com.wz7982::sqala-jdbc:$sqalaVersion",
+    // sqala data processing(json and data mapping)
+    ivy"com.wz7982::sqala-data:$sqalaVersion",
   )
 }
