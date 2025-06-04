@@ -1,12 +1,17 @@
 package site.dragove.todo
 
+import sttp.tapir.*
 import sqala.metadata.autoInc
+import com.github.plokhotnyuk.jsoniter_scala.core.*
+import com.github.plokhotnyuk.jsoniter_scala.macros.*
 case class Todo(
     @autoInc
     id: Long,
     title: String,
     completed: Boolean
-)
+) derives ConfiguredJsonValueCodec
+object Todo:
+  given JsonValueCodec[List[Todo]] = JsonCodecMaker.make
 object DB:
   import org.sqlite.SQLiteDataSource
   import org.sqlite.SQLiteConfig
@@ -58,4 +63,5 @@ object TodoRepo:
 
   def list(completed: Option[Boolean]) =
     db.fetch:
-      from[Todo].filterIf(completed.isDefined)(_.completed == completed)
+      query:
+        from[Todo].filterIf(completed.isDefined)(_.completed == completed)

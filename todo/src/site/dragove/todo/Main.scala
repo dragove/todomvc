@@ -19,7 +19,8 @@ object Main extends OxApp.Simple:
             .allowOrigin(Origin.Host("http", "localhost", Some(3000)))
             .allowAllMethods
         )
-      ).options
+      )
+      .options
     val binding = useInScope(
       NettySyncServer()
         .options(corsInterceptor)

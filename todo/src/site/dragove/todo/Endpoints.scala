@@ -23,9 +23,8 @@ object Controller:
   def delete(url: String) = endpoint.delete.in(url)
 
 object Endpoints:
-  import sqala.data.mapping.*
   import Controller.*
-  import TapirJsonSqala.jsonBody
+  import sttp.tapir.json.jsoniter.*
   val successJson = "{\"success\": true}"
 
   def init =
@@ -51,7 +50,7 @@ object Endpoints:
         .in(jsonBody[AddTodo])
         .out(stringJsonBody)
         .handleSuccess: t =>
-          TodoRepo.insert(t.mapTo[Todo])
+          TodoRepo.insert(Todo(0L, t.title, t.completed))
           successJson
 
     controller:

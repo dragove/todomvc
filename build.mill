@@ -2,27 +2,30 @@ package build
 import mill._, scalalib._
 
 object todo extends ScalaModule {
-  def scalaVersion = "3.6.4"
-  override def scalacOptions: T[Seq[String]] =Seq(
+  def scalaVersion = "3.7.1"
+  override def scalacOptions: T[Seq[String]] = Seq(
     "-Wsafe-init",
-    "-Yexplicit-nulls",
-    "-language:experimental.namedTuples",
+    "-Yexplicit-nulls"
   )
 
-  val tapirVersion = "1.11.24"
-  val sqalaVersion = "0.2.31"
+  val tapirVersion = "1.11.33"
+  val sqalaVersion = "0.3.5"
+  val scribeVersion = "3.16.1"
+  val jsoniterVersion = "2.36.2"
   def ivyDeps = Agg(
     // logging lib
-    ivy"com.outr::scribe:3.16.1",
-    ivy"com.outr::scribe-slf4j2:3.16.1",
+    ivy"com.outr::scribe:$scribeVersion",
+    ivy"com.outr::scribe-slf4j2:$scribeVersion",
     // http server
-    ivy"com.softwaremill.ox::core:0.5.13",
+    ivy"com.softwaremill.ox::core:0.6.0",
     ivy"com.softwaremill.sttp.tapir::tapir-core:$tapirVersion",
     ivy"com.softwaremill.sttp.tapir::tapir-netty-server-sync:$tapirVersion",
+    ivy"com.softwaremill.sttp.tapir::tapir-jsoniter-scala:$tapirVersion",
     // database
     ivy"org.xerial:sqlite-jdbc:3.49.1.0",
     ivy"com.wz7982::sqala-jdbc:$sqalaVersion",
-    // sqala data processing(json and data mapping)
-    ivy"com.wz7982::sqala-data:$sqalaVersion",
+    // json processing
+    ivy"com.github.plokhotnyuk.jsoniter-scala::jsoniter-scala-core::$jsoniterVersion",
+    ivy"com.github.plokhotnyuk.jsoniter-scala::jsoniter-scala-macros::$jsoniterVersion"
   )
 }
