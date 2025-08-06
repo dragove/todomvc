@@ -1,13 +1,11 @@
 package site.dragove.todo
 
-import sttp.tapir.*
-
-import sttp.shared.Identity
-import sttp.tapir.generic.auto.*
-import sttp.tapir.server.ServerEndpoint
-import sttp.tapir.EndpointIO.Body
-import sttp.tapir.json.circe.*
 import io.circe.generic.auto.*
+import sttp.shared.Identity
+import sttp.tapir.*
+import sttp.tapir.generic.auto.*
+import sttp.tapir.json.circe.*
+import sttp.tapir.server.ServerEndpoint
 
 object Controller:
   import scala.collection.mutable.ArrayBuffer

@@ -1,27 +1,26 @@
+//| mill-version: 1.0.3
 package build
-import mill._, scalalib._
+import mill.*
+import mill.scalalib.*
 
-object todo extends ScalaModule {
-  def scalaVersion = "3.7.1"
-  override def scalacOptions: T[Seq[String]] = Seq(
-    "-Wsafe-init",
-    "-Yexplicit-nulls"
-  )
+object todo extends ScalaModule:
+  def scalaVersion = "3.7.2"
+  override def scalacOptions: T[Seq[String]] =
+    Seq("-Wsafe-init", "-Yexplicit-nulls")
 
-  val tapirVersion = "1.11.33"
-  val scribeVersion = "3.16.1"
-  val jsoniterVersion = "2.36.2"
-  def ivyDeps = Agg(
+  private val tapirVersion = "1.11.40"
+  private val scribeVersion = "3.17.0"
+  val jsoniterVersion = "2.37.1"
+  def mvnDeps = Seq(
     // logging lib
-    ivy"com.outr::scribe:$scribeVersion",
-    ivy"com.outr::scribe-slf4j2:$scribeVersion",
+    mvn"com.outr::scribe:$scribeVersion",
+    mvn"com.outr::scribe-slf4j2:$scribeVersion",
     // http server
-    ivy"com.softwaremill.ox::core:0.6.0",
-    ivy"com.softwaremill.sttp.tapir::tapir-core:$tapirVersion",
-    ivy"com.softwaremill.sttp.tapir::tapir-netty-server-sync:$tapirVersion",
-    ivy"com.softwaremill.sttp.tapir::tapir-json-circe:$tapirVersion",
+    mvn"com.softwaremill.ox::core:1.0.0-RC2",
+    mvn"com.softwaremill.sttp.tapir::tapir-core:$tapirVersion",
+    mvn"com.softwaremill.sttp.tapir::tapir-netty-server-sync:$tapirVersion",
+    mvn"com.softwaremill.sttp.tapir::tapir-json-circe:$tapirVersion",
     // database
-    ivy"org.xerial:sqlite-jdbc:3.49.1.0",
-    ivy"com.wz7982::sqala-jdbc:0.3.5"
+    mvn"org.xerial:sqlite-jdbc:3.50.3.0",
+    mvn"com.wz7982::sqala-jdbc:0.3.6"
   )
-}

@@ -1,16 +1,13 @@
 package site.dragove.todo
 
 import ox.*
-import sttp.tapir.server.netty.sync.NettySyncServer
-import sttp.tapir.server.netty.sync.NettySyncServerOptions
-import sttp.tapir.server.interceptor.cors.CORSInterceptor
-import sttp.tapir.server.interceptor.cors.CORSConfig
 import sttp.model.headers.Origin
-import sttp.model.Method
+import sttp.tapir.server.interceptor.cors.{CORSConfig, CORSInterceptor}
+import sttp.tapir.server.netty.sync.{NettySyncServer, NettySyncServerOptions}
 
 object Main extends OxApp.Simple:
   def run(using Ox): Unit =
-    val port = sys.env.get("HTTP_PORT").flatMap(_.toIntOption).getOrElse(8080)
+    val port = 8080
     val corsInterceptor = NettySyncServerOptions.customiseInterceptors
       .corsInterceptor(
         CORSInterceptor.customOrThrow(

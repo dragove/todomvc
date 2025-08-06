@@ -1,6 +1,5 @@
 package site.dragove.todo
 
-import sttp.tapir.*
 import sqala.metadata.autoInc
 case class Todo(
     @autoInc
@@ -9,8 +8,7 @@ case class Todo(
     completed: Boolean
 )
 object DB:
-  import org.sqlite.SQLiteDataSource
-  import org.sqlite.SQLiteConfig
+  import org.sqlite.{SQLiteConfig, SQLiteDataSource}
   import sqala.jdbc.*
   import sqala.printer.SqliteDialect
   given logger: Logger = Logger(it => scribe.debug(it))
@@ -31,7 +29,10 @@ object DB:
 
 object TodoRepo:
   import DB.db
+  import sqala.jdbc.Logger
   import sqala.static.dsl.*
+
+  given logger: Logger = Logger(it => scribe.debug(it))
   def insert(todo: Todo) =
     db.insert(todo)
 
