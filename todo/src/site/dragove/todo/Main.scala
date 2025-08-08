@@ -18,12 +18,15 @@ object Main extends OxApp.Simple:
         )
       )
       .options
-    val binding = useInScope(
-      NettySyncServer()
-        .options(corsInterceptor)
-        .port(port)
-        .addEndpoints(Controller.all.toList)
-        .start()
-    )(_.stop())
-    println(s"Server started at http://localhost:${binding.port}. ")
-    never
+
+    supervised {
+      val binding = useInScope(
+        NettySyncServer()
+          .options(corsInterceptor)
+          .port(port)
+          .addEndpoints(Controller.all.toList)
+          .start()
+      )(_.stop())
+      println(s"Server started at http://localhost:${binding.port}. ")
+      never
+    }
