@@ -1,4 +1,4 @@
-//| mill-version: 1.0.3
+//| mill-version: 1.0.4
 package build
 import mill.*
 import mill.scalalib.*
@@ -22,5 +22,5 @@ object todo extends ScalaModule:
     mvn"com.softwaremill.sttp.tapir::tapir-json-circe:$tapirVersion",
     // database
     mvn"org.xerial:sqlite-jdbc:3.50.3.0",
-    mvn"com.wz7982::sqala-jdbc:0.3.6"
+    mvn"com.wz7982::sqala-jdbc:0.3.12"
   )

@@ -1,6 +1,7 @@
 package site.dragove.todo
 
 import sqala.metadata.autoInc
+import javax.sql.DataSource
 case class Todo(
     @autoInc
     id: Long,
@@ -11,21 +12,22 @@ object DB:
   import org.sqlite.{SQLiteConfig, SQLiteDataSource}
   import sqala.jdbc.*
   import sqala.printer.SqliteDialect
+  import sqala.dynamic.dsl.sql
+  given JdbcConnection[DataSource] with
+    def init(url: String, username: String, password: String, driverClassName: String): DataSource = 
+      val config = SQLiteConfig()
+      val ds = SQLiteDataSource(config)
+      ds.setUrl("jdbc:sqlite:todo.db")
+      ds
+  val db =
+    JdbcContext(SqliteDialect, "jdbc:sqlite:todo.db", "", "", "jdbc:sqlite:todo.db")
   given logger: Logger = Logger(it => scribe.debug(it))
-  private val config = SQLiteConfig()
-  private val ds = SQLiteDataSource(config)
-  ds.setUrl("jdbc:sqlite:todo.db")
-  private val con = ds.getConnection()
-  con
-    .createStatement()
-    .executeUpdate("""
+  db.execute(sql"""
     CREATE TABLE IF NOT EXISTS `todo` (
         id INTEGER PRIMARY KEY,
         title TEXT,
         completed INTEGER
-    );
-    """)
-  val db = JdbcContext(ds, SqliteDialect)
+    )""")
 
 object TodoRepo:
   import DB.db
@@ -62,3 +64,4 @@ object TodoRepo:
     db.fetch:
       query:
         from[Todo].filterIf(completed.isDefined)(_.completed == completed)
+
