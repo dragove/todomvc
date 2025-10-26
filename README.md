@@ -5,11 +5,11 @@
 Server
 - Scala 3 (Language)
 - [Tapir with Netty and ox](https://tapir.softwaremill.com/en/latest/generate.html) (Server and Http endpoint, with virtual thread)
-- [Sqala](https://wz7982.github.io/sqala-doc/) (SQL Builder, Json and Data Mapping)
+- [Sqala](https://wz7982.github.io/sqala-doc/) (SQL Builder)
 - [Scribe](https://github.com/outr/scribe) (Logging)
-- [Sqlite](https://github.com/xerial/sqlite-jdbc) (Database)
+- [H2 Database](https://github.com/h2database/h2database) (Database)
 
-Client is implemented with Solidjs
+Client is implemented with [Solid.js](https://docs.solidjs.com/) and the code is based on [solid-todomvc](https://github.com/solidjs/solid-todomvc)
 
 ## Run it locally
 

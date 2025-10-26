@@ -1,7 +1,7 @@
 package site.dragove.todo
 
-import sqala.metadata.autoInc
 import javax.sql.DataSource
+import sqala.static.metadata.autoInc
 case class Todo(
     @autoInc
     id: Long,
@@ -9,24 +9,26 @@ case class Todo(
     completed: Boolean
 )
 object DB:
-  import org.sqlite.{SQLiteConfig, SQLiteDataSource}
+  import org.h2.jdbcx.JdbcDataSource
   import sqala.jdbc.*
-  import sqala.printer.SqliteDialect
   import sqala.dynamic.dsl.sql
+  import sqala.printer.H2Dialect
   given JdbcConnection[DataSource] with
-    def init(url: String, username: String, password: String, driverClassName: String): DataSource = 
-      val config = SQLiteConfig()
-      val ds = SQLiteDataSource(config)
-      ds.setUrl("jdbc:sqlite:todo.db")
+    def init(url: String, username: String, password: String, driverClassName: String): JdbcDataSource =
+      scribe.info("database start initialization")
+      val ds = JdbcDataSource()
+      ds.setURL(url)
+      ds.setUser(username)
+      ds.setPassword(password)
+      scribe.info("database initialization completed")
       ds
-  val db =
-    JdbcContext(SqliteDialect, "jdbc:sqlite:todo.db", "", "", "jdbc:sqlite:todo.db")
-  given logger: Logger = Logger(it => scribe.debug(it))
+  val db = JdbcContext(H2Dialect, true, "jdbc:h2:mem:todo;DB_CLOSE_DELAY=-1", "sa", "", "")
+  given logger: Logger = Logger(it => scribe.info(it))
   db.execute(sql"""
-    CREATE TABLE IF NOT EXISTS `todo` (
-        id INTEGER PRIMARY KEY,
-        title TEXT,
-        completed INTEGER
+    CREATE TABLE IF NOT EXISTS "todo" (
+        "id" BIGINT PRIMARY KEY AUTO_INCREMENT,
+        "title" TEXT,
+        "completed" BOOLEAN
     )""")
 
 object TodoRepo:
@@ -53,15 +55,13 @@ object TodoRepo:
         .set(_.completed := completed)
 
   def deleteById(id: Long) =
-    db.execute:
-      delete[Todo].where(_.id == id)
+    db.execute(query:
+      delete[Todo].where(_.id == id))
 
   def deleteCompleted() =
-    db.execute:
-      delete[Todo].where(_.completed)
+    db.execute(query:
+      delete[Todo].where(_.completed))
 
   def list(completed: Option[Boolean]) =
-    db.fetch:
-      query:
-        from[Todo].filterIf(completed.isDefined)(_.completed == completed)
-
+    db.fetch(query:
+      from(Todo).filterIf(completed.isDefined)(_.completed == completed))

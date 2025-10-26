@@ -185,7 +185,6 @@ const TodoApp = () => {
 										value={todo.title}
 										onFocusOut={[save, todo.id]}
 										onKeyUp={[doneEditing, todo.id]}
-										use:setFocus
 									/>
 								</Show>
 							</li>

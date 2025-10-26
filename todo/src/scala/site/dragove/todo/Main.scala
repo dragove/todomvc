@@ -4,9 +4,15 @@ import ox.*
 import sttp.model.headers.Origin
 import sttp.tapir.server.interceptor.cors.{CORSConfig, CORSInterceptor}
 import sttp.tapir.server.netty.sync.{NettySyncServer, NettySyncServerOptions}
+import scribe.format.Formatter
 
 object Main extends OxApp.Simple:
   def run(using Ox): Unit =
+    // config scribe logging to log in single line
+    scribe.Logger.root
+      .clearHandlers()
+      .withHandler(formatter = Formatter.compact)
+      .replace()
     val port = 8080
     val corsInterceptor = NettySyncServerOptions.customiseInterceptors
       .corsInterceptor(
