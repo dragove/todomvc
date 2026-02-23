@@ -1,4 +1,4 @@
-//| mill-version: 1.0.6
+//| mill-version: 1.1.2
 //| mill-jvm-opts: ["--enable-native-access=ALL-UNNAMED"]
 package build
 import mill.*
@@ -6,22 +6,23 @@ import mill.scalalib.*
 
 object todo extends ScalaModule:
 
-  def scalaVersion = "3.7.3"
+  def jvmVersion = "25"
+  def scalaVersion = "3.8.1"
   def scalacOptions =
     Seq("-Wsafe-init", "-Yexplicit-nulls", "-Wunused:all")
 
-  val tapirVersion = "1.11.50"
+  val tapirVersion = "1.13.8"
   def mvnDeps = Seq(
     // logging lib
     mvn"com.outr::scribe-slf4j2:3.17.0",
     // http server
-    mvn"com.softwaremill.ox::core:1.0.1",
+    mvn"com.softwaremill.ox::core:1.0.4",
     mvn"com.softwaremill.sttp.tapir::tapir-core:$tapirVersion",
     mvn"com.softwaremill.sttp.tapir::tapir-netty-server-sync:$tapirVersion",
     mvn"com.softwaremill.sttp.tapir::tapir-json-circe:$tapirVersion",
     // database
     mvn"com.h2database:h2:2.4.240",
-    mvn"com.wz7982::sqala-jdbc:0.5.2"
+    mvn"com.wz7982::sqala-jdbc:0.5.5"
   )
 
   def forkArgs = Seq(

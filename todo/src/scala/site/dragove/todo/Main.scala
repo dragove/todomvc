@@ -33,6 +33,6 @@ object Main extends OxApp.Simple:
           .addEndpoints(Controller.all.toList)
           .start()
       )(_.stop())
-      println(s"Server started at http://localhost:${binding.port}. ")
+      println(s"Server started at http://localhost:${binding.port} running on JVM ${Runtime.version().feature()}. ")
       never
     }
